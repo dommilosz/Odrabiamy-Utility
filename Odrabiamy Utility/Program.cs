@@ -1,11 +1,7 @@
 ﻿using CefSharp.WinForms;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Odrabiamy_Utility
@@ -29,7 +25,7 @@ namespace Odrabiamy_Utility
                 ChromiumWebBrowser browser = new ChromiumWebBrowser("odrabiamy.pl");
                 browser.Dispose();
             }
-            catch 
+            catch
             {
                 if (File.Exists(Application.StartupPath + "/DLL/OU.exe"))
                 {

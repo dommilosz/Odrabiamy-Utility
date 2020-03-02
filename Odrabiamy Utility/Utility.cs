@@ -2,14 +2,12 @@
 using ScreenShotDemo;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Reflection;
 using WinFormsUtil;
 
 namespace Odrabiamy_Utility
@@ -19,6 +17,7 @@ namespace Odrabiamy_Utility
         public static ChromiumWebBrowser browser;
         public static ChromiumWebBrowser navbrowser;
         List<Answer> answers = new List<Answer>();
+        bool exit = false;
         public Utility()
         {
             InitializeComponent();
@@ -95,7 +94,7 @@ namespace Odrabiamy_Utility
             int width = panel3.Width + addx;
             navbrowser.Size = new Size(width, panel3.Height);
             float p2 = 100;
-            p2 =  panel3.Width/1345f*100;
+            p2 = panel3.Width / 1345f * 100;
             float p = p2 * 0.9f;
             p = (float)Math.Floor(p);
             List<string> scripts = new List<string>();
@@ -103,8 +102,8 @@ namespace Odrabiamy_Utility
             //scripts.Add($"document.getElementsByClassName(\"btn btn-primary\")[0].style.fontSize = \"{p}%\"");
             scripts.Add($"document.getElementsByClassName(\"container\")[0].style.marginRight = \"auto\"");
             scripts.Add($"document.getElementsByClassName(\"container\")[0].style.marginLeft = \"unset\"");
-            scripts.Add($"document.getElementsByClassName(\"container\")[0].style.maxWidth = \"{panel3.Width-100}px\"");
-            scripts.Add($"document.getElementsByClassName(\"container\")[0].style.Width = \"{panel3.Width-100}px\"");
+            scripts.Add($"document.getElementsByClassName(\"container\")[0].style.maxWidth = \"{panel3.Width - 100}px\"");
+            scripts.Add($"document.getElementsByClassName(\"container\")[0].style.Width = \"{panel3.Width - 100}px\"");
             DoScript(scripts, navbrowser);
             if (browser.Address.Contains("blad")) browser.GetBrowser().GoBack();
         }
@@ -161,29 +160,29 @@ namespace Odrabiamy_Utility
             bool valid = true;
             try { Convert.ToInt32(output[1]); } catch { valid = false; }
 
-            if (output[1].Length > 0 && output[1].Length < 5&&valid)
+            if (output[1].Length > 0 && output[1].Length < 5 && valid)
             {
                 navigation_txts[2] = output[1];
-                if(!url.Contains($"strona-{navigation_txts[2]}"))
-                browser.Load( browser.GetBrowser().MainFrame.Url + $"/strona-{navigation_txts[2]}");
+                if (!url.Contains($"strona-{navigation_txts[2]}"))
+                    browser.Load(browser.GetBrowser().MainFrame.Url + $"/strona-{navigation_txts[2]}");
                 if (url.Contains($"strona-{navigation_txts[2]}"))
                 {
-                    if (output[3].Length > 10&&output[3].Contains("zadanie-"))
+                    if (output[3].Length > 10 && output[3].Contains("zadanie-"))
                     {
                         var tmp = output[3].Split('/');
-                        navigation_txts[1] = tmp[6].Replace("zadanie-","");
+                        navigation_txts[1] = tmp[6].Replace("zadanie-", "");
                         if (!url.Contains($"zadanie-{navigation_txts[1]}"))
                             browser.Load(browser.GetBrowser().MainFrame.Url + $"/zadanie-{navigation_txts[1]}");
                     }
                 }
             }
             toolStripMenuItem4.Visible = true; nextPageToolStripMenuItem.Visible = true;
-            if (navigation_txts[2] == "-") { toolStripMenuItem4.Visible = false;nextPageToolStripMenuItem.Visible = false; }
+            if (navigation_txts[2] == "-") { toolStripMenuItem4.Visible = false; nextPageToolStripMenuItem.Visible = false; }
             txt_Book.Text = navigation_txts[0];
             txt_Ex.Text = navigation_txts[1];
             txt_Page.Text = navigation_txts[2];
             string navhtml = GetHTML(navbrowser);
-            if(navhtml.Contains("Przejdź do Odrabiamy"))
+            if (navhtml.Contains("Przejdź do Odrabiamy"))
             {
                 label2.BringToFront();
                 label2.Text = "Accept RODO";
@@ -269,12 +268,12 @@ namespace Odrabiamy_Utility
         {
             string html = "#null";
             if (browser.IsBrowserInitialized)
-                html = DoScript(@"document.getElementsByTagName('html')[0].innerHTML",b);
+                html = DoScript(@"document.getElementsByTagName('html')[0].innerHTML", b);
             return html;
         }
         public void SetHTML(string html, ChromiumWebBrowser b = null)
         {
-            DoScript($"document.documentElement.innerHTML = '{html}'",b);
+            DoScript($"document.documentElement.innerHTML = '{html}'", b);
         }
 
         private void Refresh_Click(object sender, EventArgs e)
@@ -297,7 +296,7 @@ namespace Odrabiamy_Utility
                 html = dosrc.Result.Result.ToString();
 
             return html;
-            
+
         }
         public List<string> DoScript(List<string> scripts, ChromiumWebBrowser b = null)
         {
@@ -328,16 +327,20 @@ namespace Odrabiamy_Utility
 
         private void Utility_FormClosing(object sender, FormClosingEventArgs e)
         {
-            List<string> lines = new List<string>();
-            foreach (var item in answers)
+            if (!exit)
             {
-                lines.Add(item.source);
-                lines.Add(item.name);
-                lines.Add(item.preview);
-            }
+                List<string> lines = new List<string>();
+                foreach (var item in answers)
+                {
+                    lines.Add(item.source);
+                    lines.Add(item.name);
+                    lines.Add(item.preview);
+                }
 
-            File.WriteAllLines(Application.StartupPath + "/sc.save", lines.ToArray());
-            WFUtil.SingleProgress("Saving", "Saving screenshots to file", 100);
+                File.WriteAllLines(Application.StartupPath + "/sc.save", lines.ToArray());
+                WFUtil.SingleProgress("Saving", "Saving screenshots to file", 100); exit = true;
+            }
+            Application.Exit();
         }
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
@@ -423,7 +426,7 @@ namespace Odrabiamy_Utility
 
         private void scriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(DoScript(WFUtil.SingleInput("Script","Enter Script to Execute","")),"Script Results");
+            MessageBox.Show(DoScript(WFUtil.SingleInput("Script", "Enter Script to Execute", "")), "Script Results");
         }
     }
 

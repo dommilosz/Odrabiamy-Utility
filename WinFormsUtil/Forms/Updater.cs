@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsUtil
@@ -54,22 +46,22 @@ namespace WinFormsUtil
             button2.Enabled = false;
             switch (mode)
             {
-                case "update": UPDATES.Update(UPDATES.update_url.AbsoluteUri,UPDATES.apiurl);break;
-                case "dll": UPDATES.DownloadDLL(dllpatch);break;
+                case "update": UPDATES.Update(UPDATES.update_url.AbsoluteUri, UPDATES.apiurl); break;
+                case "dll": UPDATES.DownloadDLL(dllpatch); break;
             }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if(UPDATES.progress<=100)
-            progressBar1.Value = UPDATES.progress;
-            if (UPDATES.progress == 100) { button2.Enabled = true; this.Close(); }
+            if (UPDATES.progress <= 100)
+                progressBar1.Value = UPDATES.progress;
+            if (UPDATES.progress == 100 && mode == "dll") { button2.Enabled = true; this.Close(); }
         }
 
         private void Updater_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(!button2.Enabled)
-            e.Cancel = true;
+            if (!button2.Enabled)
+                e.Cancel = true;
         }
     }
 }

@@ -47,31 +47,31 @@ namespace WinFormsUtil
             Version v = new Version(Application.ProductVersion);
             return v;
         }
-        public static Version GetLatestVersion(string giturl,string apiurl)
+        public static Version GetLatestVersion(string giturl, string apiurl)
         {
-            string ver = UPDATES.CheckUpdates(giturl,apiurl);
+            string ver = UPDATES.CheckUpdates(giturl, apiurl);
             if (ver.Split(':')[1].Contains("T"))
             {
-                return new Version(ver.Split(':')[2]);
+                return new Version(ver.Split(':')[2].Replace("]", ""));
             }
             return null;
         }
-        public static bool IsUpToDate(string giturl,string apiurl)
+        public static bool IsUpToDate(string giturl, string apiurl)
         {
-            GetLatestVersion(giturl,apiurl);
+            GetLatestVersion(giturl, apiurl);
             return UPDATES.uptodate;
         }
-        public static void Update(string giturl,string apiurl)
+        public static void Update(string giturl, string apiurl)
         {
-            UPDATES.Update(giturl,apiurl);
+            UPDATES.Update(giturl, apiurl);
         }
         public static void DownloadDLL(string giturl)
         {
             UPDATES.DownloadDLL(giturl);
         }
-        public static void UpdateWindow(string giturl,string apiurl)
+        public static void UpdateWindow(string giturl, string apiurl)
         {
-            if (IsUpToDate(giturl,apiurl)) return;
+            if (IsUpToDate(giturl, apiurl)) return;
             Updater u = new Updater();
             u.UpdateForm();
             u.ShowDialog();
@@ -98,7 +98,7 @@ namespace WinFormsUtil
         public static int progress = 0;
         public static int BytesPSavg = 0;
         public static string apiurl = "";
-        public static string appname = "OdrabiamyUtility.exe";
+        public static string appname = "Odrabiamy.Utility.exe";
         public static string token = "?client_id=9a3e58501214628adc6d&client_secret=9f30900fad7b567e1c59e931f0518cedc8aec68c";
         class GitHubRelease
         {
@@ -114,7 +114,7 @@ namespace WinFormsUtil
             [JsonProperty("body")]
             public string Description { get; set; }
         }
-        public static string CheckUpdates(string giturl,string apiurl2)
+        public static string CheckUpdates(string giturl, string apiurl2)
         {
             apiurl = apiurl2;
             try
@@ -148,13 +148,13 @@ namespace WinFormsUtil
             catch { }
             return "ERROR";
         }
-        public static string Update(string giturl,string apiurl)
+        public static string Update(string giturl, string apiurl)
         {
             int sec = DateTime.Now.Second;
             progress = 0;
             BytesPSavg = 0;
             int fileindex = 0;
-            CheckUpdates(giturl,apiurl);
+            CheckUpdates(giturl, apiurl);
             if (uptodate || dev)
             {
                 return "[FALSE:LATEST]";
@@ -183,7 +183,7 @@ namespace WinFormsUtil
                         }
                         break;
                 }
-                
+
             }
             void W_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
             {
@@ -203,13 +203,13 @@ namespace WinFormsUtil
             WebClient w = new WebClient();
             w.DownloadProgressChanged += W_DownloadProgressChanged;
             w.DownloadFileCompleted += W_DownloadFileCompleted;
-            w.DownloadFileAsync(new Uri(giturl), newpatch+"-DLL.dll");
+            w.DownloadFileAsync(new Uri(giturl), newpatch + "-DLL.dll");
             void W_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
             {
                 string dir = Application.StartupPath + "/DLL";
                 Directory.CreateDirectory(dir);
                 progress = 100;
-                ZipFile.ExtractToDirectory(newpatch + "-DLL.dll",dir);
+                ZipFile.ExtractToDirectory(newpatch + "-DLL.dll", dir);
                 File.Delete(newpatch + "-DLL.dll");
                 File.Copy(Application.ExecutablePath, dir + "/OU.exe");
             }
