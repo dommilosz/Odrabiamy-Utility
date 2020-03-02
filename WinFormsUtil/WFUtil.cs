@@ -40,35 +40,38 @@ namespace WinFormsUtil
         }
         public static Version GetVersion()
         {
+            if (Application.ProductName == "DEV")
+            {
+                return null;
+            }
             Version v = new Version(Application.ProductVersion);
             return v;
         }
-        public static Version GetLatestVersion(string giturl)
+        public static Version GetLatestVersion(string giturl,string apiurl)
         {
-            string ver = UPDATES.CheckUpdates(giturl);
+            string ver = UPDATES.CheckUpdates(giturl,apiurl);
             if (ver.Split(':')[1].Contains("T"))
             {
                 return new Version(ver.Split(':')[2]);
             }
             return null;
         }
-        public static bool IsUpToDate(string giturl)
+        public static bool IsUpToDate(string giturl,string apiurl)
         {
-            Version v1 = GetVersion();
-            Version v2 = GetLatestVersion(giturl);
+            GetLatestVersion(giturl,apiurl);
             return UPDATES.uptodate;
         }
-        public static void Update(string giturl)
+        public static void Update(string giturl,string apiurl)
         {
-            UPDATES.Update(giturl);
+            UPDATES.Update(giturl,apiurl);
         }
         public static void DownloadDLL(string giturl)
         {
             UPDATES.DownloadDLL(giturl);
         }
-        public static void UpdateWindow(string giturl)
+        public static void UpdateWindow(string giturl,string apiurl)
         {
-            if (IsUpToDate(giturl)) return;
+            if (IsUpToDate(giturl,apiurl)) return;
             Updater u = new Updater();
             u.UpdateForm();
             u.ShowDialog();
@@ -94,6 +97,7 @@ namespace WinFormsUtil
         public static Version remote;
         public static int progress = 0;
         public static int BytesPSavg = 0;
+        public static string apiurl = "";
         public static string appname = "OdrabiamyUtility.exe";
         public static string token = "?client_id=9a3e58501214628adc6d&client_secret=9f30900fad7b567e1c59e931f0518cedc8aec68c";
         class GitHubRelease
@@ -110,9 +114,9 @@ namespace WinFormsUtil
             [JsonProperty("body")]
             public string Description { get; set; }
         }
-        public static string CheckUpdates(string giturl)
+        public static string CheckUpdates(string giturl,string apiurl2)
         {
-
+            apiurl = apiurl2;
             try
             {
                 uptodate = true;
@@ -120,7 +124,7 @@ namespace WinFormsUtil
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 WebClient wc = new WebClient();
                 wc.Headers.Add("User-Agent", "request");
-                var json = wc.DownloadString(new Uri(giturl + token));
+                var json = wc.DownloadString(new Uri(apiurl + token));
                 GitHubRelease latest = JsonConvert.DeserializeObject<GitHubRelease>(json);
                 string latestVersion = latest.Tag,
                 currentVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
@@ -144,13 +148,13 @@ namespace WinFormsUtil
             catch { }
             return "ERROR";
         }
-        public static string Update(string giturl)
+        public static string Update(string giturl,string apiurl)
         {
             int sec = DateTime.Now.Second;
             progress = 0;
             BytesPSavg = 0;
             int fileindex = 0;
-            CheckUpdates(giturl);
+            CheckUpdates(giturl,apiurl);
             if (uptodate || dev)
             {
                 return "[FALSE:LATEST]";

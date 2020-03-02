@@ -54,7 +54,7 @@ namespace WinFormsUtil
             button2.Enabled = false;
             switch (mode)
             {
-                case "update": UPDATES.Update(UPDATES.update_url.AbsoluteUri);break;
+                case "update": UPDATES.Update(UPDATES.update_url.AbsoluteUri,UPDATES.apiurl);break;
                 case "dll": UPDATES.DownloadDLL(dllpatch);break;
             }
         }

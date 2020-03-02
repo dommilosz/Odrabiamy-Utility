@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CefSharp.WinForms;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -25,8 +26,8 @@ namespace Odrabiamy_Utility
             }
             try
             {
-                WinFormsUtil.WFUtil.UpdateWindow("https://github.com/dommilosz/Odrabiamy-Utility/releases/latest");
-                Application.Run(new Utility());
+                ChromiumWebBrowser browser = new ChromiumWebBrowser("odrabiamy.pl");
+                browser.Dispose();
             }
             catch 
             {
@@ -35,14 +36,15 @@ namespace Odrabiamy_Utility
                     Process.Start(Application.StartupPath + "/DLL/OU.exe");
                     return;
                 }
-                WinFormsUtil.WFUtil.DLLWindow(@"https://github.com/dommilosz/Odrabiamy-Utility/releases/download/Service/CefSharp.zip"); 
-                
+                WinFormsUtil.WFUtil.DLLWindow(@"https://github.com/dommilosz/Odrabiamy-Utility/releases/download/Service/CefSharp.zip");
+                if (!tried)
+                {
+                    tried = true;
+                    Main();
+                }
             }
-            if (!tried)
-            {
-                tried = true;
-                Main();
-            }
+            WinFormsUtil.WFUtil.UpdateWindow("https://github.com/dommilosz/Odrabiamy-Utility/releases/latest", @"https://api.github.com/repos/dommilosz/Odrabiamy-Utility/releases/latest");
+            Application.Run(new Utility());
         }
     }
 }
