@@ -22,25 +22,26 @@ namespace Odrabiamy_Utility
             }
             try
             {
-                ChromiumWebBrowser browser = new ChromiumWebBrowser("odrabiamy.pl");
-                browser.Dispose();
+                Application.Run(new Utility());
             }
             catch
             {
-                if (File.Exists(Application.StartupPath + "/DLL/OU.exe"))
+                if (Utility.isDllError)
                 {
-                    Process.Start(Application.StartupPath + "/DLL/OU.exe");
-                    return;
-                }
-                WinFormsUtil.WFUtil.DLLWindow(@"https://github.com/dommilosz/Odrabiamy-Utility/releases/download/Service/CefSharp.zip");
-                if (!tried)
-                {
-                    tried = true;
-                    Main();
+                    if (File.Exists(Application.StartupPath + "/DLL/OU.exe"))
+                    {
+                        Process.Start(Application.StartupPath + "/DLL/OU.exe");
+                        return;
+                    }
+                    WinFormsUtil.WFUtil.DLLWindow(@"https://github.com/dommilosz/Odrabiamy-Utility/releases/download/Service/CefSharp.zip");
+                    if (!tried)
+                    {
+                        tried = true;
+                        Main();
+                    }
                 }
             }
             WinFormsUtil.WFUtil.UpdateWindow("https://github.com/dommilosz/Odrabiamy-Utility/releases/latest", @"https://api.github.com/repos/dommilosz/Odrabiamy-Utility/releases/latest");
-            Application.Run(new Utility());
         }
     }
 }

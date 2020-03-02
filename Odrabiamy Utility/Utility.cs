@@ -16,12 +16,14 @@ namespace Odrabiamy_Utility
     {
         public static ChromiumWebBrowser browser;
         public static ChromiumWebBrowser navbrowser;
+        public static bool isDllError = true;
         List<Answer> answers = new List<Answer>();
         bool exit = false;
         public Utility()
         {
             InitializeComponent();
             browser = new ChromiumWebBrowser("odrabiamy.pl");
+            isDllError = false;
             panel1.Controls.Add(browser);
             browser.Dock = DockStyle.Fill;
             browser.BringToFront();
@@ -388,7 +390,7 @@ namespace Odrabiamy_Utility
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
-            while (!navbrowser.IsBrowserInitialized || !browser.IsBrowserInitialized || !navbrowser.GetBrowser().HasDocument) { Application.DoEvents(); }
+            if (!navbrowser.IsBrowserInitialized || !browser.IsBrowserInitialized || !navbrowser.GetBrowser().HasDocument) { Application.DoEvents(); }
             RenderTimer.Start(); ;
             SlowRenderTimer.Start();
             SuperSlowRenderTimer.Start();
