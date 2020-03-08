@@ -9,6 +9,7 @@ namespace Odrabiamy_Utility
     static class Program
     {
         static bool tried = false;
+        public static bool onlycheckerror = true;
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.
         /// </summary>
@@ -20,11 +21,12 @@ namespace Odrabiamy_Utility
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
             }
+            try { WinFormsUtil.WFUtil.UpdateWindow("https://github.com/dommilosz/Odrabiamy-Utility/releases/latest", @"https://api.github.com/repos/dommilosz/Odrabiamy-Utility/releases/latest"); } catch { }
             try
             {
                 Application.Run(new Utility());
             }
-            catch
+            catch (Exception ex)
             {
                 if (Utility.isDllError)
                 {
@@ -40,8 +42,11 @@ namespace Odrabiamy_Utility
                         Main();
                     }
                 }
+                else
+                {
+                    throw ex;
+                }
             }
-            WinFormsUtil.WFUtil.UpdateWindow("https://github.com/dommilosz/Odrabiamy-Utility/releases/latest", @"https://api.github.com/repos/dommilosz/Odrabiamy-Utility/releases/latest");
         }
     }
 }

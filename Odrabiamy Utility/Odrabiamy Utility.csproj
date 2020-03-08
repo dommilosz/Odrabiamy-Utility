@@ -163,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WinFormsUtil\WinFormsUtil.csproj">
-      <Project>{C4EAD27C-72CC-4AEA-BDAB-5F782EE0562F}</Project>
+      <Project>{c4ead27c-72cc-4aea-bdab-5f782ee0562f}</Project>
       <Name>WinFormsUtil</Name>
     </ProjectReference>
   </ItemGroup>

@@ -41,14 +41,16 @@ namespace Odrabiamy_Utility
             this.Refresh = new System.Windows.Forms.ToolStripMenuItem();
             this.HOME = new System.Windows.Forms.ToolStripMenuItem();
             this.SAVE_ANSWER = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.nextPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.bookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txt_Book = new System.Windows.Forms.ToolStripMenuItem();
             this.pageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txt_Page = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.txt_Ex = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.nextPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -62,12 +64,12 @@ namespace Odrabiamy_Utility
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RenderTimer = new System.Windows.Forms.Timer(this.components);
             this.SlowRenderTimer = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuperSlowRenderTimer = new System.Windows.Forms.Timer(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -201,6 +203,26 @@ namespace Odrabiamy_Utility
             this.SAVE_ANSWER.Text = "SCREENSHOT";
             this.SAVE_ANSWER.Click += new System.EventHandler(this.SAVE_ANSWER_Click);
             // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(94, 24);
+            this.toolStripMenuItem4.Text = "Previews Page";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            // 
+            // nextPageToolStripMenuItem
+            // 
+            this.nextPageToolStripMenuItem.Name = "nextPageToolStripMenuItem";
+            this.nextPageToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
+            this.nextPageToolStripMenuItem.Text = "Next Page";
+            this.nextPageToolStripMenuItem.Click += new System.EventHandler(this.nextPageToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(37, 24);
+            this.toolStripMenuItem3.Text = "      ";
+            // 
             // bookToolStripMenuItem
             // 
             this.bookToolStripMenuItem.Name = "bookToolStripMenuItem";
@@ -237,19 +259,11 @@ namespace Odrabiamy_Utility
             this.txt_Ex.Size = new System.Drawing.Size(24, 24);
             this.txt_Ex.Text = "-";
             // 
-            // toolStripMenuItem4
+            // toolStripMenuItem1
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(94, 24);
-            this.toolStripMenuItem4.Text = "Previews Page";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
-            // 
-            // nextPageToolStripMenuItem
-            // 
-            this.nextPageToolStripMenuItem.Name = "nextPageToolStripMenuItem";
-            this.nextPageToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
-            this.nextPageToolStripMenuItem.Text = "Next Page";
-            this.nextPageToolStripMenuItem.Click += new System.EventHandler(this.nextPageToolStripMenuItem_Click);
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 24);
+            this.toolStripMenuItem1.Text = "      ";
             // 
             // scriptToolStripMenuItem
             // 
@@ -278,7 +292,7 @@ namespace Odrabiamy_Utility
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(792, 424);
+            this.tabPage2.Size = new System.Drawing.Size(876, 424);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "SAVED";
             // 
@@ -288,7 +302,7 @@ namespace Odrabiamy_Utility
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(212, 27);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(577, 394);
+            this.panel2.Size = new System.Drawing.Size(661, 394);
             this.panel2.TabIndex = 1;
             // 
             // pictureBox1
@@ -296,7 +310,7 @@ namespace Odrabiamy_Utility
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(577, 394);
+            this.pictureBox1.Size = new System.Drawing.Size(661, 394);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -317,10 +331,11 @@ namespace Odrabiamy_Utility
             this.itemToolStripMenuItem,
             this.clearToolStripMenuItem,
             this.reloadToolStripMenuItem,
-            this.saveToolStripMenuItem});
+            this.saveToolStripMenuItem,
+            this.exportToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(3, 3);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(786, 24);
+            this.menuStrip2.Size = new System.Drawing.Size(870, 24);
             this.menuStrip2.TabIndex = 2;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -370,6 +385,13 @@ namespace Odrabiamy_Utility
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
             // RenderTimer
             // 
             this.RenderTimer.Interval = 300;
@@ -388,18 +410,6 @@ namespace Odrabiamy_Utility
             // 
             this.SuperSlowRenderTimer.Interval = 2000;
             this.SuperSlowRenderTimer.Tick += new System.EventHandler(this.SuperSlowRenderTimer_Tick);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 24);
-            this.toolStripMenuItem1.Text = "      ";
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(37, 24);
-            this.toolStripMenuItem3.Text = "      ";
             // 
             // Utility
             // 
@@ -470,6 +480,8 @@ namespace Odrabiamy_Utility
         private System.Windows.Forms.ToolStripMenuItem scriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

@@ -150,7 +150,7 @@ namespace WinFormsUtil
         }
         public static string Update(string giturl, string apiurl)
         {
-            int sec = DateTime.Now.Second;
+            Int32 sec = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             progress = 0;
             BytesPSavg = 0;
             int fileindex = 0;
@@ -187,8 +187,9 @@ namespace WinFormsUtil
             }
             void W_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
             {
-                int sec2 = DateTime.Now.Second;
+                Int32 sec2 = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 int duration = sec2 - sec;
+                if (duration < 1) duration++;
                 progress = e.ProgressPercentage;
                 BytesPSavg = (Convert.ToInt32(e.BytesReceived)) / duration;
             }

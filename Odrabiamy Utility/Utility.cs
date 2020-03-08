@@ -165,17 +165,10 @@ namespace Odrabiamy_Utility
             if (output[1].Length > 0 && output[1].Length < 5 && valid)
             {
                 navigation_txts[2] = output[1];
-                if (!url.Contains($"strona-{navigation_txts[2]}"))
-                    browser.Load(browser.GetBrowser().MainFrame.Url + $"/strona-{navigation_txts[2]}");
-                if (url.Contains($"strona-{navigation_txts[2]}"))
+                if (output[3].Length > 10 && output[3].Contains("zadanie-"))
                 {
-                    if (output[3].Length > 10 && output[3].Contains("zadanie-"))
-                    {
-                        var tmp = output[3].Split('/');
-                        navigation_txts[1] = tmp[6].Replace("zadanie-", "");
-                        if (!url.Contains($"zadanie-{navigation_txts[1]}"))
-                            browser.Load(browser.GetBrowser().MainFrame.Url + $"/zadanie-{navigation_txts[1]}");
-                    }
+                    var tmp = output[3].Split('/');
+                    navigation_txts[1] = tmp[6].Replace("zadanie-", "");
                 }
             }
             toolStripMenuItem4.Visible = true; nextPageToolStripMenuItem.Visible = true;
@@ -355,6 +348,7 @@ namespace Odrabiamy_Utility
         {
             if (MessageBox.Show("Do You Want To Reload ScreenShots From File?", "RELOAD?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
+                answers.Clear();
                 try
                 {
                     var lines = File.ReadAllLines(Application.StartupPath + "/sc.save").ToList();
@@ -430,22 +424,68 @@ namespace Odrabiamy_Utility
         {
             MessageBox.Show(DoScript(WFUtil.SingleInput("Script", "Enter Script to Execute", "")), "Script Results");
         }
-    }
 
-    public class Answer
-    {
-        public string source = "";
-        public string name = "";
-        public string preview;
-        public Answer(string html, string name, string img)
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            source = html;
-            this.name = name;
-            preview = img;
+            if (!Directory.Exists(Application.StartupPath + "/Export"))
+                Directory.CreateDirectory(Application.StartupPath + "/Export");
+            Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            if (!Directory.Exists(Application.StartupPath + $"/Export/{unixTimestamp}"))
+                Directory.CreateDirectory(Application.StartupPath + $"/Export/{unixTimestamp}");
+            foreach (var item in answers)
+            {
+                string imageText = item.preview;
+                string name = item.name.Replace('/', '-');
+                name = name.Replace(@"\"[0], '-');
+                name = name.Replace(':', '-');
+                string path = Application.StartupPath + $"/Export/{unixTimestamp}/{name}.png";
+                if (File.Exists(path)) path += $" - {unixTimestamp}.png";
+                Image img;
+                byte[] bitmapData = new byte[imageText.Length];
+                bitmapData = Convert.FromBase64String(imageText);
+
+                using (var streamBitmap = new MemoryStream(bitmapData))
+                {
+                    using (img = Image.FromStream(streamBitmap))
+                    {
+                        img.Save(path);
+                    }
+                }
+
+            }
+            string path2 = Application.StartupPath + $"/Export";
+            foreach (var item in Directory.GetDirectories(path2))
+            {
+                if (Directory.GetFiles(item).Length < 1)
+                {
+                    Directory.Delete(item);
+                }
+                if (item.Contains(".Latest---"))
+                {
+                    Directory.Move(item, item.Replace(".Latest---", ""));
+                }
+            }
+            Directory.Move(path2+"/"+unixTimestamp,  path2 + "/" + ".Latest---"+ unixTimestamp);
         }
     }
-
 }
+
+
+
+public class Answer
+{
+    public string source = "";
+    public string name = "";
+    public string preview;
+    public Answer(string html, string name, string img)
+    {
+        source = html;
+        this.name = name;
+        preview = img;
+    }
+}
+
+
 namespace ScreenShotDemo
 {
     /// <summary>
