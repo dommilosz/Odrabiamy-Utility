@@ -26,6 +26,25 @@ namespace WinFormsUtil
                 return ib.Output.Text;
             return value;
         }
+        public static string[] LoginInput(string title, string label, string value, string value2)
+        {
+            var ib = new InputBox();
+            ib.Size = new System.Drawing.Size(ib.Width, ib.Height + 300);
+            ib.label1.Text = label;
+            ib.Text = title;
+            ib.Output.Text = value;
+            ib.Output.Visible = true;
+            ib.button1.Visible = true;
+            ib.label1.Visible = true;
+            ib.PassInput.Visible = true;
+            ib.PassInput.Text = value2;
+            ib.PassInput.UseSystemPasswordChar = true;
+            ib.ShowDialog();
+            string[] ret = { ib.Output.Text, ib.PassInput.Text };
+            if (ib.Output.Text.Length > 0&&ib.PassInput.Text.Length>0)
+                return ret;
+            return null;
+        }
         public static void SingleProgress(string title, string label, int value)
         {
             var ib = new InputBox();

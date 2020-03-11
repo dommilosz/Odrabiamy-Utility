@@ -1,4 +1,5 @@
-﻿using CefSharp.WinForms;
+﻿using CefSharp;
+using CefSharp.WinForms;
 using ScreenShotDemo;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using WinFormsUtil;
 
@@ -21,22 +23,23 @@ namespace Odrabiamy_Utility
         bool exit = false;
         public Utility()
         {
-            InitializeComponent();
-            browser = new ChromiumWebBrowser("odrabiamy.pl");
+            CefSettings settings = new CefSettings();
             isDllError = false;
-            panel1.Controls.Add(browser);
-            browser.Dock = DockStyle.Fill;
-            browser.BringToFront();
-            navbrowser = new ChromiumWebBrowser("odrabiamy.pl");
-            panel3.Controls.Add(navbrowser);
-            navbrowser.BringToFront();
-            navbrowser.Size = new Size(100, 100);
-            navbrowser.Dock = DockStyle.None;
-            browser.AddressChanged += Browser_AddressChanged;
-            timer1.Enabled = true;
+            string path = Application.StartupPath + "/DATA/CACHE";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            settings.CachePath = path;
+            settings.PersistSessionCookies = true;
+            //Initialize Cef with the provided settings
+            Cef.Initialize(settings);
+
+            InitializeComponent();
+            InitializeBrowsers();
             try
             {
-                var lines = File.ReadAllLines(Application.StartupPath + "/sc.save").ToList();
+                var lines = File.ReadAllLines(Application.StartupPath + "/DATA/sc.save").ToList();
                 for (int i = 0; i < lines.Count; i += 3)
                 {
                     string url = lines[i];
@@ -49,6 +52,34 @@ namespace Odrabiamy_Utility
             {
 
             }
+        }
+
+        private void InitializeBrowsers(bool postinit = false)
+        {
+
+
+            ThreadStart ts = new ThreadStart(Init);
+            Thread t = new Thread(ts);
+            t.Start();
+            void Init()
+            {
+                browser = new ChromiumWebBrowser("odrabiamy.pl");
+                navbrowser = new ChromiumWebBrowser("odrabiamy.pl");
+            }
+            while (browser == null && navbrowser == null) Application.DoEvents();
+            panel3.Controls.Add(navbrowser);
+            navbrowser.BringToFront();
+            navbrowser.Size = new Size(100, 100);
+            navbrowser.Dock = DockStyle.None;
+            panel1.Controls.Add(browser);
+            browser.Dock = DockStyle.Fill;
+            browser.BringToFront();
+            browser.AddressChanged += Browser_AddressChanged;
+            timer1.Enabled = true;
+            RenderTimer.Enabled = true;
+            SlowRenderTimer.Enabled = true;
+            SuperSlowRenderTimer.Enabled = true;
+
         }
 
         public void Browser_AddressChanged(object sender, CefSharp.AddressChangedEventArgs e)
@@ -332,7 +363,7 @@ namespace Odrabiamy_Utility
                     lines.Add(item.preview);
                 }
 
-                File.WriteAllLines(Application.StartupPath + "/sc.save", lines.ToArray());
+                File.WriteAllLines(Application.StartupPath + "/DATA/sc.save", lines.ToArray());
                 WFUtil.SingleProgress("Saving", "Saving screenshots to file", 100); exit = true;
             }
             Application.Exit();
@@ -351,7 +382,7 @@ namespace Odrabiamy_Utility
                 answers.Clear();
                 try
                 {
-                    var lines = File.ReadAllLines(Application.StartupPath + "/sc.save").ToList();
+                    var lines = File.ReadAllLines(Application.StartupPath + "/DATA/sc.save").ToList();
                     for (int i = 0; i < lines.Count; i += 3)
                     {
                         string url = lines[i];
@@ -377,7 +408,7 @@ namespace Odrabiamy_Utility
                 lines.Add(item.preview);
             }
 
-            File.WriteAllLines(Application.StartupPath + "/sc.save", lines.ToArray());
+            File.WriteAllLines(Application.StartupPath + "/DATA/sc.save", lines.ToArray());
             WFUtil.SingleProgress("Saving", "Saving screenshots to file", 100);
         }
 
@@ -427,18 +458,18 @@ namespace Odrabiamy_Utility
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(Application.StartupPath + "/Export"))
-                Directory.CreateDirectory(Application.StartupPath + "/Export");
+            if (!Directory.Exists(Application.StartupPath + "/DATA/Export"))
+                Directory.CreateDirectory(Application.StartupPath + "/DATA/Export");
             Int32 unixTimestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            if (!Directory.Exists(Application.StartupPath + $"/Export/{unixTimestamp}"))
-                Directory.CreateDirectory(Application.StartupPath + $"/Export/{unixTimestamp}");
+            if (!Directory.Exists(Application.StartupPath + $"/DATA/Export/{unixTimestamp}"))
+                Directory.CreateDirectory(Application.StartupPath + $"/DATA/Export/{unixTimestamp}");
             foreach (var item in answers)
             {
                 string imageText = item.preview;
                 string name = item.name.Replace('/', '-');
                 name = name.Replace(@"\"[0], '-');
                 name = name.Replace(':', '-');
-                string path = Application.StartupPath + $"/Export/{unixTimestamp}/{name}.png";
+                string path = Application.StartupPath + $"/DATA/Export/{unixTimestamp}/{name}.png";
                 if (File.Exists(path)) path += $" - {unixTimestamp}.png";
                 Image img;
                 byte[] bitmapData = new byte[imageText.Length];
@@ -453,7 +484,7 @@ namespace Odrabiamy_Utility
                 }
 
             }
-            string path2 = Application.StartupPath + $"/Export";
+            string path2 = Application.StartupPath + $"/DATA/Export";
             foreach (var item in Directory.GetDirectories(path2))
             {
                 if (Directory.GetFiles(item).Length < 1)
@@ -465,7 +496,13 @@ namespace Odrabiamy_Utility
                     Directory.Move(item, item.Replace(".Latest---", ""));
                 }
             }
-            Directory.Move(path2+"/"+unixTimestamp,  path2 + "/" + ".Latest---"+ unixTimestamp);
+            Directory.Move(path2 + "/" + unixTimestamp, path2 + "/" + ".Latest---" + unixTimestamp);
+            MessageBox.Show($"EXPORTED to {path2}", "EXPORTED");
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

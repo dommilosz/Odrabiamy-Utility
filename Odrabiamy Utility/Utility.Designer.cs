@@ -38,16 +38,15 @@ namespace Odrabiamy_Utility
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.BACK = new System.Windows.Forms.ToolStripMenuItem();
             this.FORWARD = new System.Windows.Forms.ToolStripMenuItem();
-            this.Refresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.RefreshBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.HOME = new System.Windows.Forms.ToolStripMenuItem();
             this.SAVE_ANSWER = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.nextPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.bookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txt_Book = new System.Windows.Forms.ToolStripMenuItem();
             this.pageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txt_Page = new System.Windows.Forms.ToolStripMenuItem();
+            this.nextPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txt_Book = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.txt_Ex = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -140,16 +139,15 @@ namespace Odrabiamy_Utility
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.BACK,
             this.FORWARD,
-            this.Refresh,
+            this.RefreshBtn,
             this.HOME,
             this.SAVE_ANSWER,
             this.toolStripMenuItem4,
-            this.nextPageToolStripMenuItem,
-            this.toolStripMenuItem3,
-            this.bookToolStripMenuItem,
-            this.txt_Book,
             this.pageToolStripMenuItem,
             this.txt_Page,
+            this.nextPageToolStripMenuItem,
+            this.bookToolStripMenuItem,
+            this.txt_Book,
             this.toolStripMenuItem2,
             this.txt_Ex,
             this.toolStripMenuItem1,
@@ -178,14 +176,14 @@ namespace Odrabiamy_Utility
             this.FORWARD.Text = ">";
             this.FORWARD.Click += new System.EventHandler(this.FORWARD_Click);
             // 
-            // Refresh
+            // RefreshBtn
             // 
-            this.Refresh.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Refresh.ForeColor = System.Drawing.Color.Blue;
-            this.Refresh.Name = "Refresh";
-            this.Refresh.Size = new System.Drawing.Size(35, 24);
-            this.Refresh.Text = "↻";
-            this.Refresh.Click += new System.EventHandler(this.Refresh_Click);
+            this.RefreshBtn.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.RefreshBtn.ForeColor = System.Drawing.Color.Blue;
+            this.RefreshBtn.Name = "RefreshBtn";
+            this.RefreshBtn.Size = new System.Drawing.Size(35, 24);
+            this.RefreshBtn.Text = "↻";
+            this.RefreshBtn.Click += new System.EventHandler(this.Refresh_Click);
             // 
             // HOME
             // 
@@ -199,41 +197,16 @@ namespace Odrabiamy_Utility
             // 
             this.SAVE_ANSWER.ForeColor = System.Drawing.Color.Green;
             this.SAVE_ANSWER.Name = "SAVE_ANSWER";
-            this.SAVE_ANSWER.Size = new System.Drawing.Size(90, 24);
-            this.SAVE_ANSWER.Text = "SCREENSHOT";
+            this.SAVE_ANSWER.Size = new System.Drawing.Size(45, 24);
+            this.SAVE_ANSWER.Text = "SAVE";
             this.SAVE_ANSWER.Click += new System.EventHandler(this.SAVE_ANSWER_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(94, 24);
-            this.toolStripMenuItem4.Text = "Previews Page";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(33, 24);
+            this.toolStripMenuItem4.Text = "  <";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
-            // 
-            // nextPageToolStripMenuItem
-            // 
-            this.nextPageToolStripMenuItem.Name = "nextPageToolStripMenuItem";
-            this.nextPageToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
-            this.nextPageToolStripMenuItem.Text = "Next Page";
-            this.nextPageToolStripMenuItem.Click += new System.EventHandler(this.nextPageToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(37, 24);
-            this.toolStripMenuItem3.Text = "      ";
-            // 
-            // bookToolStripMenuItem
-            // 
-            this.bookToolStripMenuItem.Name = "bookToolStripMenuItem";
-            this.bookToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
-            this.bookToolStripMenuItem.Text = "Book : ";
-            // 
-            // txt_Book
-            // 
-            this.txt_Book.Name = "txt_Book";
-            this.txt_Book.Size = new System.Drawing.Size(24, 24);
-            this.txt_Book.Text = "-";
             // 
             // pageToolStripMenuItem
             // 
@@ -246,6 +219,25 @@ namespace Odrabiamy_Utility
             this.txt_Page.Name = "txt_Page";
             this.txt_Page.Size = new System.Drawing.Size(24, 24);
             this.txt_Page.Text = "-";
+            // 
+            // nextPageToolStripMenuItem
+            // 
+            this.nextPageToolStripMenuItem.Name = "nextPageToolStripMenuItem";
+            this.nextPageToolStripMenuItem.Size = new System.Drawing.Size(33, 24);
+            this.nextPageToolStripMenuItem.Text = ">  ";
+            this.nextPageToolStripMenuItem.Click += new System.EventHandler(this.nextPageToolStripMenuItem_Click);
+            // 
+            // bookToolStripMenuItem
+            // 
+            this.bookToolStripMenuItem.Name = "bookToolStripMenuItem";
+            this.bookToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.bookToolStripMenuItem.Text = "Book : ";
+            // 
+            // txt_Book
+            // 
+            this.txt_Book.Name = "txt_Book";
+            this.txt_Book.Size = new System.Drawing.Size(24, 24);
+            this.txt_Book.Text = "-";
             // 
             // toolStripMenuItem2
             // 
@@ -262,8 +254,8 @@ namespace Odrabiamy_Utility
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 24);
-            this.toolStripMenuItem1.Text = "      ";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(22, 24);
+            this.toolStripMenuItem1.Text = "|";
             // 
             // scriptToolStripMenuItem
             // 
@@ -411,6 +403,10 @@ namespace Odrabiamy_Utility
             this.SuperSlowRenderTimer.Interval = 2000;
             this.SuperSlowRenderTimer.Tick += new System.EventHandler(this.SuperSlowRenderTimer_Tick);
             // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Utility
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -464,7 +460,7 @@ namespace Odrabiamy_Utility
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem BACK;
         private System.Windows.Forms.ToolStripMenuItem FORWARD;
-        private System.Windows.Forms.ToolStripMenuItem Refresh;
+        private System.Windows.Forms.ToolStripMenuItem RefreshBtn;
         private System.Windows.Forms.ToolStripMenuItem HOME;
         private System.Windows.Forms.ToolStripMenuItem SAVE_ANSWER;
         private System.Windows.Forms.ToolStripMenuItem bookToolStripMenuItem;
@@ -478,10 +474,9 @@ namespace Odrabiamy_Utility
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem nextPageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scriptToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

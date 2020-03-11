@@ -34,6 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.PassInput = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Output
@@ -79,15 +80,24 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // PassInput
+            // 
+            this.PassInput.Location = new System.Drawing.Point(12, 49);
+            this.PassInput.Name = "PassInput";
+            this.PassInput.Size = new System.Drawing.Size(262, 20);
+            this.PassInput.TabIndex = 4;
+            this.PassInput.Visible = false;
+            // 
             // InputBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(328, 55);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.PassInput);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Output);
+            this.Controls.Add(this.progressBar1);
             this.Name = "InputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "IB";
@@ -103,5 +113,6 @@
         public System.Windows.Forms.Label label1;
         public System.Windows.Forms.ProgressBar progressBar1;
         public System.Windows.Forms.Timer timer1;
+        public System.Windows.Forms.TextBox PassInput;
     }
 }
