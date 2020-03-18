@@ -51,6 +51,10 @@ namespace Odrabiamy_Utility
             this.txt_Ex = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZoomLabel = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rESETToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -151,7 +155,8 @@ namespace Odrabiamy_Utility
             this.toolStripMenuItem2,
             this.txt_Ex,
             this.toolStripMenuItem1,
-            this.scriptToolStripMenuItem});
+            this.scriptToolStripMenuItem,
+            this.ZoomLabel});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(870, 28);
@@ -263,6 +268,37 @@ namespace Odrabiamy_Utility
             this.scriptToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.scriptToolStripMenuItem.Text = "Script";
             this.scriptToolStripMenuItem.Click += new System.EventHandler(this.scriptToolStripMenuItem_Click);
+            // 
+            // ZoomLabel
+            // 
+            this.ZoomLabel.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem5,
+            this.toolStripMenuItem6,
+            this.rESETToolStripMenuItem});
+            this.ZoomLabel.Name = "ZoomLabel";
+            this.ZoomLabel.Size = new System.Drawing.Size(70, 24);
+            this.ZoomLabel.Text = "ZOOM : 0";
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(105, 22);
+            this.toolStripMenuItem5.Text = "+";
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(105, 22);
+            this.toolStripMenuItem6.Text = "-";
+            this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
+            // 
+            // rESETToolStripMenuItem
+            // 
+            this.rESETToolStripMenuItem.Name = "rESETToolStripMenuItem";
+            this.rESETToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.rESETToolStripMenuItem.Text = "RESET";
+            this.rESETToolStripMenuItem.Click += new System.EventHandler(this.rESETToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -419,6 +455,8 @@ namespace Odrabiamy_Utility
             this.Name = "Utility";
             this.Text = "Odrabiamy Utility";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Utility_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Utility_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Utility_KeyUp);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -477,6 +515,10 @@ namespace Odrabiamy_Utility
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ZoomLabel;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem rESETToolStripMenuItem;
     }
 }
 

@@ -20,7 +20,9 @@ namespace Odrabiamy_Utility
         public static ChromiumWebBrowser navbrowser;
         public static bool isDllError = true;
         List<Answer> answers = new List<Answer>();
+        Size navsize;
         bool exit = false;
+        public float zoom = 0f;
         public Utility()
         {
             CefSettings settings = new CefSettings();
@@ -56,8 +58,6 @@ namespace Odrabiamy_Utility
 
         private void InitializeBrowsers(bool postinit = false)
         {
-
-
             ThreadStart ts = new ThreadStart(Init);
             Thread t = new Thread(ts);
             t.Start();
@@ -79,12 +79,21 @@ namespace Odrabiamy_Utility
             RenderTimer.Enabled = true;
             SlowRenderTimer.Enabled = true;
             SuperSlowRenderTimer.Enabled = true;
-
+            navsize = navbrowser.Size;
+            browser.MouseWheel += Browser_MouseWheel;
+            browser.KeyDown += Utility_KeyDown;
+            browser.KeyUp += Utility_KeyUp;
         }
+
 
         public void Browser_AddressChanged(object sender, CefSharp.AddressChangedEventArgs e)
         {
-            navbrowser.Load("https://odrabiamy.pl/blad");
+            Thread t = new Thread(new ThreadStart(NavLoad));
+            void NavLoad()
+            {
+                navbrowser.Load("https://odrabiamy.pl/blad");
+            }
+            t.Start();
         }
 
         private void BACK_Click(object sender, EventArgs e)
@@ -479,7 +488,7 @@ namespace Odrabiamy_Utility
                 {
                     using (img = Image.FromStream(streamBitmap))
                     {
-                        img.Save(path);
+                        img.Save(path,ImageFormat.Png);
                     }
                 }
 
@@ -503,6 +512,57 @@ namespace Odrabiamy_Utility
         private void timer2_Tick(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            SetZoomDelta(ZoomToAdd);
+        }
+
+        private void toolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            SetZoomDelta(-ZoomToAdd);
+        }
+
+        private void rESETToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetZoom(0);
+        }
+        public static float ZoomToAdd = 0.5f;
+        public static float ZoomLvl = 0;
+        public void SetZoom(float dzoom)
+        {
+            zoom = dzoom;
+            ZoomLabel.Text = $"ZOOM : {zoom}";
+            float tmp = zoom - ZoomLvl;
+            SizeF sizeF = new SizeF(tmp, tmp);
+            browser.SetZoomLevel(zoom);
+            var navcontrol = (Control)navbrowser;
+            navcontrol.Scale(sizeF);
+        }
+        public void SetZoomDelta(float dzoom)
+        {
+            zoom += dzoom;
+            SetZoom(zoom);
+        }
+        bool ctrl = false;
+        public void Utility_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Control) ctrl = true;
+        }
+
+        public void Utility_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Control) ctrl = false;
+        }
+
+        private void Browser_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (ctrl)
+            {
+                SetZoomDelta(((float)e.Delta) / 20);
+                
+            }
         }
     }
 }
